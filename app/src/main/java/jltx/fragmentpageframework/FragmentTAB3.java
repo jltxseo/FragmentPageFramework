@@ -14,7 +14,8 @@ import cn.jltx.fragmentpageframework.CustomAnimFrameLayout;
 import cn.jltx.fragmentpageframework.FragmentPageActivity;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author jltxseo
+ *         Created by junlintianxia on 2016年01月29日.
  */
 public class FragmentTAB3 extends Fragment {
 

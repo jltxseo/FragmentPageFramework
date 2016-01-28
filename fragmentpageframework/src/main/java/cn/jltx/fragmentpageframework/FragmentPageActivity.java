@@ -6,7 +6,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 /**
- * Created by Administrator on 2015/8/16.
+ * @author jltxseo
+ *         Created by junlintianxia on 2016年01月29日.
  */
 public  class FragmentPageActivity extends Activity{
 
