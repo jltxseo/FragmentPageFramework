@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import cn.jltx.fragmentpageframework.BackHandledFragment;
 import cn.jltx.fragmentpageframework.CustomAnimFrameLayout;
 import cn.jltx.fragmentpageframework.FragmentPageActivity;
 
@@ -18,7 +19,7 @@ import cn.jltx.fragmentpageframework.FragmentPageActivity;
  * @author jltxseo
  *         Created by junlintianxia on 2016年01月29日.
  */
-public class FragmentPop1 extends Fragment {
+public class FragmentPop1 extends BackHandledFragment {
 
     private final String TAG = FragmentPop1.class.getSimpleName();
 
@@ -66,7 +67,8 @@ public class FragmentPop1 extends Fragment {
             switch (v.getId()){
                 case R.id.btn_pop:
                     if(fragmentPageActivity != null){
-                        fragmentPageActivity.popBackStack();
+//                        fragmentPageActivity.popBackStack();
+                        fragmentPageActivity.onBackPressed();
                     }
                     break;
                 case R.id.btn_push:
@@ -85,4 +87,8 @@ public class FragmentPop1 extends Fragment {
         }
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 }

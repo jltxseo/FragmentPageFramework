@@ -9,9 +9,26 @@ import android.app.FragmentTransaction;
  * @author jltxseo
  *         Created by junlintianxia on 2016年01月29日.
  */
-public  class FragmentPageActivity extends Activity{
+public  class FragmentPageActivity extends Activity implements BackHandledInterface{
 
     private int fragmentContainerId = 0;
+    //当前显示的Fragment页面
+    private BackHandledFragment mBackHandedFragment;
+    @Override
+    public void setSelectedFragment(BackHandledFragment selectedFragment) {
+        mBackHandedFragment = selectedFragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mBackHandedFragment == null || !mBackHandedFragment.onBackPressed()){
+            if(getFragmentManager().getBackStackEntryCount() == 0){
+                super.onBackPressed();
+            }else{
+                getFragmentManager().popBackStack();
+            }
+        }
+    }
 
     /**
      * 设置FragmentPage框架的最底层的可以容纳Fragment页面的容器ID
@@ -201,7 +218,7 @@ public  class FragmentPageActivity extends Activity{
     }
 
     /**
-     * 回退到上一个页面，该回退时间压到FragmentManager操作队列里
+     * 强制回退到上一个页面，该回退时间压到FragmentManager操作队列里
      * 使用popBackStack()来弹出栈内容的话，调用该方法后会将事物操作插入到FragmentManager的操作队列，只有当轮询到该事物时才能执行。
      */
     public void popBackStack(){
