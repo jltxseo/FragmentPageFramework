@@ -17,9 +17,10 @@ public class MainActivity extends FragmentPageActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentTAB1 fragmentTAB1 = new FragmentTAB1();
-        setFragmentContainerId(R.id.fragment_cotainer);
-        setFirstFragmentPage(fragmentTAB1);
+        if(savedInstanceState == null){
+            FragmentTAB1 fragmentTAB1 = new FragmentTAB1();
+            setFirstFragmentPage(R.id.fragment_cotainer,fragmentTAB1);
+        }
     }
 
 

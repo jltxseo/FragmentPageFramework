@@ -9,16 +9,23 @@ import android.app.FragmentTransaction;
  * @author jltxseo
  *         Created by junlintianxia on 2016年01月29日.
  */
-public  class FragmentPageActivity extends Activity implements BackHandledInterface{
+public  class FragmentPageActivity extends Activity implements FragmentHandledInterface {
 
-    private int fragmentContainerId = 0;
     //当前显示的Fragment页面
     private BackHandledFragment mBackHandedFragment;
+
+    /**
+     * 设置当前fragment，方便监听返回键
+     * @param selectedFragment
+     */
     @Override
     public void setSelectedFragment(BackHandledFragment selectedFragment) {
         mBackHandedFragment = selectedFragment;
     }
 
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         if(mBackHandedFragment == null || !mBackHandedFragment.onBackPressed()){
@@ -30,20 +37,15 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
         }
     }
 
-    /**
-     * 设置FragmentPage框架的最底层的可以容纳Fragment页面的容器ID
-     * @param fragmentContainerId
-     */
-    public void setFragmentContainerId(int fragmentContainerId) {
-        this.fragmentContainerId = fragmentContainerId;
-    }
 
     /**
      * 将一个frament添加到框架里面
+     * @param fragmentContainerId
      * @param fragment
-     * @return 返回添加成功的Fragment的ID
+     * @return  返回添加成功的Fragment的ID
      */
-    public int setFirstFragmentPage(Fragment fragment){
+    @Override
+    public int setFirstFragmentPage(int fragmentContainerId,Fragment fragment){
         if(fragment != null && fragmentContainerId != 0){
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -53,21 +55,15 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
         return -1;
     }
 
-    /**
-     *
-     * @param fragment
-     * @param enter
-     * @param exit
-     * @param popEnter
-     * @param popExit
-     * @param isAddStack
-     * @return
-     */
-    public int addFragmentPageToFrameWork(Fragment fragment,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
-        return addFragmentPageToFrameWork(fragment,null,enter,exit,popEnter,popExit,isAddStack);
+
+    @Override
+    public int addFragmentPageToFrameWork(int fragmentContainerId,Fragment fragment,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
+        return addFragmentPageToFrameWork(fragmentContainerId,fragment,null,enter,exit,popEnter,popExit,isAddStack);
     }
+
     /**
      *
+     * @param fragmentContainerId
      * @param fragment
      * @param tag
      * @param enter
@@ -77,7 +73,8 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param isAddStack
      * @return
      */
-    public int addFragmentPageToFrameWork(Fragment fragment,String tag,int enter, int exit,
+    @Override
+    public int addFragmentPageToFrameWork(int fragmentContainerId,Fragment fragment,String tag,int enter, int exit,
                                               int popEnter, int popExit,boolean isAddStack){
         if(fragment != null && fragmentContainerId != 0){
             FragmentManager fragmentManager = getFragmentManager();
@@ -97,6 +94,11 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
         return -1;
     }
 
+    /**
+     *
+     * @param fragment
+     */
+    @Override
     public void removeFragmentPageFromFrameWork(Fragment fragment){
         if(fragment != null){
             FragmentManager fragmentManager = getFragmentManager();
@@ -105,73 +107,130 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
             fragmentTransaction.commit();
         }
     }
+
     /**
      *
+     * @param fragmentContainerId
      * @param to
+     * @param enter
+     * @param exit
+     * @param popEnter
+     * @param popExit
+     * @param isAddStack
      * @return
      */
-    public int popFragmentPageToFrameWorkFromTop(Fragment to,int enter, int exit,
-                                                 int popEnter, int popExit,boolean isAddStack){
-        return popFragmentPageToFrameWorkFromTop(to, null,enter,exit,popEnter,popExit,isAddStack);
-    }
-
-    public int popFragmentPageToFrameWorkFromTop(Fragment to,int enter, int exit,boolean isAddStack){
-        return popFragmentPageToFrameWorkFromTop(to, null,enter,exit,isAddStack);
+    @Override
+    public int popFragmentPageToFrameWorkFromTop(int fragmentContainerId,Fragment to,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
+        return popFragmentPageToFrameWorkFromTop(fragmentContainerId,to, null,enter,exit,popEnter,popExit,isAddStack);
     }
 
     /**
      *
+     * @param fragmentContainerId
+     * @param to
+     * @param enter
+     * @param exit
+     * @param isAddStack
+     * @return
+     */
+    @Override
+    public int popFragmentPageToFrameWorkFromTop(int fragmentContainerId,Fragment to,int enter, int exit,boolean isAddStack){
+        return popFragmentPageToFrameWorkFromTop(fragmentContainerId,to, null,enter,exit,isAddStack);
+    }
+
+    /**
+     *
+     * @param fragmentContainerId
      * @param to
      * @param tag
+     * @param enter
+     * @param exit
+     * @param popEnter
+     * @param popExit
+     * @param isAddStack
      * @return
      */
-    public int popFragmentPageToFrameWorkFromTop(Fragment to,String tag,int enter, int exit,
-                                                 int popEnter, int popExit,boolean isAddStack){
+    @Override
+    public int popFragmentPageToFrameWorkFromTop( int fragmentContainerId,Fragment to,String tag,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
         FragmentManager fragmentManager = getFragmentManager();
         int backStackCount = fragmentManager.getBackStackEntryCount();
         if (backStackCount > 0){
             String topName = fragmentManager.getBackStackEntryAt(backStackCount- 1).getName();
             Fragment from = fragmentManager.findFragmentByTag(topName);
-            return popFragmentPageToFrameWork(from, to, tag,enter,exit,popEnter,popExit,isAddStack);
+            return popFragmentPageToFrameWork(fragmentContainerId,from, to, tag,enter,exit,popEnter,popExit,isAddStack);
         }
         return -1;
     }
 
-    public int popFragmentPageToFrameWorkFromTop(Fragment to,String tag,int enter, int exit,boolean isAddStack){
+    /**
+     *
+     * @param fragmentContainerId
+     * @param to
+     * @param tag
+     * @param enter
+     * @param exit
+     * @param isAddStack
+     * @return
+     */
+    @Override
+    public int popFragmentPageToFrameWorkFromTop(int fragmentContainerId,Fragment to,String tag,int enter, int exit,boolean isAddStack){
         FragmentManager fragmentManager = getFragmentManager();
         int backStackCount = fragmentManager.getBackStackEntryCount();
         if (backStackCount > 0){
             String topName = fragmentManager.getBackStackEntryAt(backStackCount- 1).getName();
             Fragment from = fragmentManager.findFragmentByTag(topName);
-            return popFragmentPageToFrameWork(from, to, tag,enter,exit,isAddStack);
+            return popFragmentPageToFrameWork(fragmentContainerId,from, to, tag,enter,exit,isAddStack);
         }
         return -1;
     }
 
     /**
      *
+     * @param fragmentContainerId
      * @param from
      * @param to
+     * @param enter
+     * @param exit
+     * @param popEnter
+     * @param popExit
+     * @param isAddStack
      * @return
      */
-    public int popFragmentPageToFrameWork(Fragment from,Fragment to,int enter, int exit,
-                                          int popEnter, int popExit,boolean isAddStack){
-        return popFragmentPageToFrameWork(from, to, null,enter,exit,popEnter,popExit,isAddStack);
-    }
-
-    public int popFragmentPageToFrameWork(Fragment from,Fragment to,int enter, int exit, boolean isAddStack){
-        return popFragmentPageToFrameWork(from, to, null,enter,exit,isAddStack);
+    @Override
+    public int popFragmentPageToFrameWork( int fragmentContainerId, Fragment from,Fragment to,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
+        return popFragmentPageToFrameWork(fragmentContainerId,from, to, null,enter,exit,popEnter,popExit,isAddStack);
     }
 
     /**
      *
+     * @param fragmentContainerId
+     * @param from
+     * @param to
+     * @param enter
+     * @param exit
+     * @param isAddStack
+     * @return
+     */
+    @Override
+    public int popFragmentPageToFrameWork( int fragmentContainerId ,Fragment from,Fragment to,int enter, int exit, boolean isAddStack){
+        return popFragmentPageToFrameWork(fragmentContainerId,from, to, null,enter,exit,isAddStack);
+    }
+
+    /**
+     *
+     * @param fragmentContainerId
      * @param from
      * @param to
      * @param tag
+     * @param enter
+     * @param exit
+     * @param popEnter
+     * @param popExit
+     * @param isAddStack
      * @return
      */
-    public int popFragmentPageToFrameWork(Fragment from,Fragment to,String tag,int enter, int exit,
-                                          int popEnter, int popExit,boolean isAddStack){
+    @Override
+    public int popFragmentPageToFrameWork(int fragmentContainerId,Fragment from,Fragment to,String tag,int enter, int exit, int popEnter, int popExit,boolean isAddStack){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(to != null && fragmentContainerId != 0){
@@ -194,7 +253,19 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
         return -1;
     }
 
-    public int popFragmentPageToFrameWork(Fragment from,Fragment to,String tag,int enter, int exit, boolean isAddStack){
+    /**
+     *
+     * @param fragmentContainerId
+     * @param from
+     * @param to
+     * @param tag
+     * @param enter
+     * @param exit
+     * @param isAddStack
+     * @return
+     */
+    @Override
+    public int popFragmentPageToFrameWork(int fragmentContainerId ,Fragment from,Fragment to,String tag,int enter, int exit, boolean isAddStack){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(to != null && fragmentContainerId != 0){
@@ -221,6 +292,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * 强制回退到上一个页面，该回退时间压到FragmentManager操作队列里
      * 使用popBackStack()来弹出栈内容的话，调用该方法后会将事物操作插入到FragmentManager的操作队列，只有当轮询到该事物时才能执行。
      */
+    @Override
     public void popBackStack(){
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack();
@@ -231,6 +303,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param name 指定的Fragment的唯一名称
      * @param flags 如果 FragmentManager.POP_BACK_STACK_INCLUSIVE则一起删除指定Fragment页面
      */
+    @Override
     public void popBackStack(String name, int flags){
         FragmentManager fragmentManager = getFragmentManager();
         if(name != null){
@@ -247,6 +320,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param id 指定的Fragment的唯一名称
      * @param flags 如果 FragmentManager.POP_BACK_STACK_INCLUSIVE则一起删除指定Fragment页面
      */
+    @Override
     public  void popBackStack(int id, int flags){
         FragmentManager fragmentManager = getFragmentManager();
         if(flags == FragmentManager.POP_BACK_STACK_INCLUSIVE){
@@ -255,10 +329,12 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
             fragmentManager.popBackStack(id,0);
         }
     }
+
     /**
      *立即执行回退到上一个页面
      * @return 如果有Fragment页面可以返回则返回true,否则返回false
      */
+    @Override
     public boolean popBackStackImmediate(){
         FragmentManager fragmentManager = getFragmentManager();
         return fragmentManager.popBackStackImmediate();
@@ -270,6 +346,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param flags
      * @return
      */
+    @Override
     public  boolean popBackStackImmediate(int id, int flags){
         FragmentManager fragmentManager = getFragmentManager();
         boolean result = false;
@@ -287,6 +364,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param flags
      * @return
      */
+    @Override
     public  boolean popBackStackImmediate(String name, int flags){
         FragmentManager fragmentManager = getFragmentManager();
         boolean result = false;
@@ -305,6 +383,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
      * @param mTargetFrament
      * @return
      */
+    @Override
     public boolean closeFragment(Fragment mTargetFrament){
         if(mTargetFrament != null){
             FragmentManager fragmentManager = getFragmentManager();
@@ -319,6 +398,7 @@ public  class FragmentPageActivity extends Activity implements BackHandledInterf
     /**
      *
      */
+    @Override
     public void closeAllFragment(){
         FragmentManager fragmentManager = getFragmentManager();
         int backStackCount = fragmentManager.getBackStackEntryCount();

@@ -3,7 +3,6 @@ package jltx.fragmentpageframework;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Button;
 
 import cn.jltx.fragmentpageframework.BackHandledFragment;
 import cn.jltx.fragmentpageframework.CustomAnimFrameLayout;
-import cn.jltx.fragmentpageframework.FragmentPageActivity;
 
 /**
  * @author jltxseo
@@ -21,18 +19,8 @@ public class FragmentPop2 extends BackHandledFragment {
 
     private final String TAG = FragmentPop2.class.getSimpleName();
 
-    private FragmentPageActivity fragmentPageActivity;
-
     @Override
     public void onAttach(Activity activity) {
-        if(activity instanceof FragmentPageActivity){
-            try{
-                this.fragmentPageActivity = (FragmentPageActivity)activity;
-            }catch (ClassCastException e){
-                Log.d(TAG,"onAttach.ClassCastException=>"+e.toString());
-            }
-
-        }
         super.onAttach(activity);
     }
 
@@ -64,14 +52,14 @@ public class FragmentPop2 extends BackHandledFragment {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btn_pop:
-                    if(fragmentPageActivity != null){
+                    if(mFragmentHandledInterface != null){
 //                        fragmentPageActivity.popBackStack();
-                        fragmentPageActivity.onBackPressed();
+                        getActivity().onBackPressed();
                     }
                     break;
                 case R.id.btn_push:
-                    if(fragmentPageActivity != null){
-                        fragmentPageActivity.closeAllFragment();
+                    if(mFragmentHandledInterface != null){
+                        mFragmentHandledInterface.closeAllFragment();
                     }
                     break;
                 default:

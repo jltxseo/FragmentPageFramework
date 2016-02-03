@@ -11,7 +11,6 @@ import android.widget.Button;
 
 import cn.jltx.fragmentpageframework.BackHandledFragment;
 import cn.jltx.fragmentpageframework.CustomAnimFrameLayout;
-import cn.jltx.fragmentpageframework.FragmentPageActivity;
 
 /**
  * @author jltxseo
@@ -21,18 +20,9 @@ public class FragmentTAB2 extends BackHandledFragment {
 
     private final String TAG = FragmentTAB2.class.getSimpleName();
 
-    private FragmentPageActivity fragmentPageActivity;
 
     @Override
     public void onAttach(Activity activity) {
-        if(activity instanceof FragmentPageActivity){
-            try{
-                this.fragmentPageActivity = (FragmentPageActivity)activity;
-            }catch (ClassCastException e){
-                Log.d(TAG,"onAttach.ClassCastException=>"+e.toString());
-            }
-
-        }
         super.onAttach(activity);
     }
 
@@ -64,15 +54,15 @@ public class FragmentTAB2 extends BackHandledFragment {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btn_pop:
-                    if(fragmentPageActivity != null){
-//                        fragmentPageActivity.popBackStack();
-                        fragmentPageActivity.onBackPressed();
+                    if(mFragmentHandledInterface != null){
+//                        mFragmentHandledInterface.popBackStack();
+                        getActivity().onBackPressed();
                     }
                     break;
                 case R.id.btn_push:
-                    if(fragmentPageActivity != null){
+                    if(mFragmentHandledInterface != null){
                         FragmentTAB3 fragmentTAB3 = new FragmentTAB3();
-                        int stackId = fragmentPageActivity.addFragmentPageToFrameWork(fragmentTAB3,R.animator.slide_fragment_horizontal_right_in,R.animator.slide_fragment_horizontal_left_out,R.animator.slide_fragment_horizontal_left_in,R.animator.slide_fragment_horizontal_right_out,true);
+                        int stackId = mFragmentHandledInterface.addFragmentPageToFrameWork(R.id.fragment_cotainer,fragmentTAB3,R.animator.slide_fragment_horizontal_right_in,R.animator.slide_fragment_horizontal_left_out,R.animator.slide_fragment_horizontal_left_in,R.animator.slide_fragment_horizontal_right_out,true);
                         Log.d(TAG,"fragment3.stackId=>"+stackId);
                     }
                     break;

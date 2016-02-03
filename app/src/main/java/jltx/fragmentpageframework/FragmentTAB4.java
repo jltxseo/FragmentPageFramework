@@ -4,7 +4,6 @@ package jltx.fragmentpageframework;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.Button;
 
 import cn.jltx.fragmentpageframework.BackHandledFragment;
 import cn.jltx.fragmentpageframework.CustomAnimFrameLayout;
-import cn.jltx.fragmentpageframework.FragmentPageActivity;
 
 /**
  * @author jltxseo
@@ -22,19 +20,8 @@ public class FragmentTAB4 extends BackHandledFragment {
 
     private final String TAG = FragmentTAB4.class.getSimpleName();
 
-    private FragmentPageActivity fragmentPageActivity;
-
-
     @Override
     public void onAttach(Activity activity) {
-        if(activity instanceof FragmentPageActivity){
-            try{
-                this.fragmentPageActivity = (FragmentPageActivity)activity;
-            }catch (ClassCastException e){
-                Log.d(TAG,"onAttach.ClassCastException=>"+e.toString());
-            }
-
-        }
         super.onAttach(activity);
     }
 
@@ -66,9 +53,9 @@ public class FragmentTAB4 extends BackHandledFragment {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btn_pop:
-                    if(fragmentPageActivity != null){
+                    if(mFragmentHandledInterface != null){
 //                        fragmentPageActivity.popBackStack();
-                        fragmentPageActivity.onBackPressed();
+                        getActivity().onBackPressed();
                     }
                     break;
                 case R.id.btn_push:
@@ -82,11 +69,11 @@ public class FragmentTAB4 extends BackHandledFragment {
     };
 
     public void popNextFragment(Fragment fragment){
-//        if(fragmentPageActivity != null){
-//            fragmentPageActivity.popFragmentPageToFrameWork(this, fragment, R.animator.slide_fragment_vertical_down_in, R.animator.slide_fragment_vertical_down_out, true);
+//        if(mFragmentHandledInterface != null){
+//            mFragmentHandledInterface.popFragmentPageToFrameWork(this, fragment, R.animator.slide_fragment_vertical_down_in, R.animator.slide_fragment_vertical_down_out, true);
 //        }
-        if(fragmentPageActivity != null){
-            fragmentPageActivity.popFragmentPageToFrameWork(this,fragment, R.animator.slide_fragment_vertical_down_in,R.animator.slide_fragment_vertical_up_out,R.animator.slide_fragment_vertical_up_in, R.animator.slide_fragment_vertical_down_out, true);
+        if(mFragmentHandledInterface != null){
+            mFragmentHandledInterface.popFragmentPageToFrameWork(R.id.fragment_cotainer,this,fragment, R.animator.slide_fragment_vertical_down_in,R.animator.slide_fragment_vertical_up_out,R.animator.slide_fragment_vertical_up_in, R.animator.slide_fragment_vertical_down_out, true);
         }
     }
 
