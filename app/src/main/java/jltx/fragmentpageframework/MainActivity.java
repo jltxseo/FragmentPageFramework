@@ -21,6 +21,8 @@ public class MainActivity extends FragmentPageActivity {
             FragmentTAB1 fragmentTAB1 = new FragmentTAB1();
             setFirstFragmentPage(R.id.fragment_cotainer,fragmentTAB1);
         }
+
+
     }
 
 
