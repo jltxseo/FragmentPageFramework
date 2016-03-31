@@ -70,6 +70,10 @@ public class FragmentPop1 extends BackHandledFragment {
         }
     };
 
+    /**
+     * 跳转到下一个页面
+     * @param fragment
+     */
     public void popNextFragment(Fragment fragment){
         if(mFragmentHandledInterface != null){
             mFragmentHandledInterface.popFragmentPageToFrameWork(R.id.fragment_cotainer,this,fragment, R.animator.slide_fragment_vertical_down_in,R.animator.slide_fragment_vertical_up_out,R.animator.slide_fragment_vertical_up_in, R.animator.slide_fragment_vertical_down_out, true);
